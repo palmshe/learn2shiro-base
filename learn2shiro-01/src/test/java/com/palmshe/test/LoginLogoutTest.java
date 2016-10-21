@@ -2,6 +2,7 @@ package com.palmshe.test;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.config.IniSecurityManagerFactory;
 import org.apache.shiro.mgt.SecurityManager;
@@ -131,5 +132,45 @@ public class LoginLogoutTest {
 		Assert.assertEquals(true, subject.isAuthenticated());//断言失败后，后面的程序不执行
 		//退出
 		subject.logout();
+	}
+	
+	/**
+	 * 封装登录功能
+	 * @param configPath 配置文件路径
+	 * @return Subject对象
+	 * @throws AuthenticationException 认证异常
+	 */
+	private Subject login(String userName, String pwd, String configPath) throws AuthenticationException{
+		//通过配置文件初始化SecurityManager工厂
+				Factory<SecurityManager> factory = new IniSecurityManagerFactory(configPath);
+				//创建SecurityManager实例，并绑定到SecurityUtils工具类上，做全局使用工具
+				SecurityManager manager= factory.getInstance();
+				SecurityUtils.setSecurityManager(manager);
+				//获取Subject身份对象，该对象是源数据集合对象
+				Subject subject= SecurityUtils.getSubject();
+				//任意指定身份信息，构建出认证token
+				UsernamePasswordToken token= new UsernamePasswordToken(userName, pwd);
+				//登录，进行认证，此时通过jdbcRealm进行认证
+				subject.login(token);
+				return subject;
+	}
+	
+	/**
+	 * 认证策略为AllSuccessfulStrategy下的测试
+	 * 保证每个Realm返回的认证信息不一样，才能获得同样数目的不同身份信息
+	 */
+	@Test
+	public void testAllSuccessfulStrategy(){
+		Subject subject= null;
+		try {
+			subject= login("admin", "123456", "classpath:shiro05.ini");
+			Assert.assertEquals(2, subject.getPrincipals().asList().size());
+		} catch (AuthenticationException e) {
+			e.printStackTrace();
+		}finally {
+			if(subject!= null && subject.isAuthenticated()){
+				subject.logout();
+			}
+		}
 	}
 }

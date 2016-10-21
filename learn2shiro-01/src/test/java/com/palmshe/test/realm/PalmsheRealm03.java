@@ -13,7 +13,7 @@ import org.apache.shiro.realm.Realm;
  * 自定义Realm，需要实现Realm
  * @author xiong.song
  */
-public class PalmsheRealm02 implements Realm {
+public class PalmsheRealm03 implements Realm {
 
 	@Override
 	public AuthenticationInfo getAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
@@ -21,22 +21,22 @@ public class PalmsheRealm02 implements Realm {
 		String userName = (String) token.getPrincipal();// 获取token传入的身份，可以传入null
 		String pwd = new String((char[]) token.getCredentials());// 获取token传入的凭证，通过调试发现凭证传入后为[c类型，可以传入null
 		// 定义认证策略
-		if (!"songxiong".equals(userName)) {
+		if (!"admin".equals(userName)) {
 			// 抛出未知用户异常
 			throw new UnknownAccountException("用户名/密码不正确");// 防止恶意轮询用户名
 		}
-		if (!"123".equals(pwd)) {
+		if (!"123456".equals(pwd)) {
 			// 抛出凭证不正确异常
 			throw new IncorrectCredentialsException("用户名/密码不正确");// 防止恶意轮询用户名
 		}
 		// 构造一个认证信息返回
-		return new SimpleAuthenticationInfo(userName, pwd, getName());
+		return new SimpleAuthenticationInfo("admin-other", pwd, getName());
 	}
 
 	@Override
 	public String getName() {
 		// 返回Realm名称
-		return "PalmsheRealm02";
+		return "PalmsheRealm03";
 	}
 
 	@Override
