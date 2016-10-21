@@ -29,5 +29,6 @@
 	</build>
 	<modules>
 		<module>learn2shiro-01</module>
+		<module>learn2shiro-02</module>
 	</modules>
 </project>
