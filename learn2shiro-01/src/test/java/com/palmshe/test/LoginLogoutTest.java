@@ -173,4 +173,23 @@ public class LoginLogoutTest {
 			}
 		}
 	}
+	
+	/**
+	 * 测试默认配置下的认证器为ModularRealmAuthenticator，策略为AtLeastOneSuccessfulStrategy
+	 * 保证每个Realm返回的认证信息不一样，才能获得同样数目的不同身份信息
+	 */
+	@Test
+	public void testDefaultAuthenticationStrategy(){
+		Subject subject= null;
+		try {
+			subject= login("admin", "123456", "classpath:shiro06.ini");
+			Assert.assertEquals(2, subject.getPrincipals().asList().size());
+		} catch (AuthenticationException e) {
+			e.printStackTrace();
+		}finally {
+			if(subject!= null && subject.isAuthenticated()){
+				subject.logout();
+			}
+		}
+	}
 }
