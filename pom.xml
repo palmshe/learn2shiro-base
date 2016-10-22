@@ -30,5 +30,6 @@
 	<modules>
 		<module>learn2shiro-01</module>
 		<module>learn2shiro-02</module>
+		<module>learn2shiro-03</module>
 	</modules>
 </project>
