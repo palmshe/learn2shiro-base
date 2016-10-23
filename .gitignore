@@ -80,4 +80,7 @@ buildNumber.properties
 *.war
 *.ear
 
+########################### mybatis-generator
+mybatis-generator/
+
 
