@@ -1,17 +1,11 @@
 package com.palmshe.shiro.dao;
 
+import org.apache.shiro.dao.DataAccessException;
+import org.springframework.stereotype.Repository;
+
 import com.palmshe.shiro.entity.Permission;
 
+@Repository
 public interface PermissionMapper {
-    int deleteByPrimaryKey(Long id);
-
-    int insert(Permission record);
-
-    int insertSelective(Permission record);
-
-    Permission selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(Permission record);
-
-    int updateByPrimaryKey(Permission record);
+	void addPermission(Permission permission) throws DataAccessException;
 }

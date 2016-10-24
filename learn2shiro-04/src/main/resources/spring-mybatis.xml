@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 以下为简单bean配置的schema，在不同jar包中有schema使用文件 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans    
+                            http://www.springframework.org/schema/beans/spring-beans-4.2.xsd    
+                            http://www.springframework.org/schema/context    
+                            http://www.springframework.org/schema/context/spring-context-4.2.xsd    
+                            http://www.springframework.org/schema/mvc    
+                            http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+                            http://www.springframework.org/schema/tx
+                            http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+                            http://www.springframework.org/schema/aop
+                            http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+                            http://www.springframework.org/schema/task
+                            http://www.springframework.org/schema/task/spring-task-4.2.xsd">
+	<!-- properties解析器 -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:jdbc.properties"/><!-- 此处不能使用classpath* -->
+	</bean>
+	
+	<!-- 数据源配置 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<property name="driverClassName" value="${mysql.driverClassName}"/>
+		<property name="maxActive" value="${mysql.maxActive}"/>
+		<!-- 不适于Druid -->
+		<!-- <property name="maxIdle" value="${mysql.maxIdle}"/> -->
+		<property name="initialSize" value="${mysql.initialSize}"/>
+		<property name="maxWait" value="${mysql.maxWait}"/>
+		<property name="password" value="${mysql.password}"/>
+		<property name="username" value="${mysql.username}"/>
+		<property name="url" value="${mysql.url}"/>
+	</bean>
+
+	<!-- session工厂配置 -->
+	<!-- 此处用mybatis-spring.jar中的工厂类代替了mybatis的工厂类 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 指定数据源 -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 指定mybatis配置文件 -->
+		<!-- <property name="configLocation" value="classpath:mybatis-config.xml"/> -->
+		<!-- 如果没有mybatis配置文件，可以指定映射文件 -->
+		<property name="mapperLocations" value="classpath:com/palmshe/shiro/mapper/**/*.xml"/>
+	</bean>
+
+	<!-- 使用mybatis-spring.jar中的映射扫描器扫描所有的dao接口，注入spring容器 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.palmshe.shiro.dao"/><!-- dao接口所在路径 -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/><!--必须是value值，不用使用ref引用， 没有废弃的工厂类 -->
+	</bean>
+</beans>

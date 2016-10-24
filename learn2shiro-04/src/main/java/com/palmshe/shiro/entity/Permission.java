@@ -51,5 +51,13 @@ public class Permission implements Serializable{
 		return "Permission [id=" + id + ", permission=" + permission + ", description=" + description + ", available="
 				+ available + "]";
 	}
+	
+	public Permission(){}
 
+	public Permission(String permission, String description, Boolean available) {
+		super();
+		this.permission = permission;
+		this.description = description;
+		this.available = available;
+	}
 }

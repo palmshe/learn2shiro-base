@@ -10,73 +10,11 @@
   <sql id="Base_Column_List" >
     id, permission, description, available
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from sys_permissions
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from sys_permissions
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.palmshe.shiro.entity.Permission" >
-    insert into sys_permissions (id, permission, description, 
-      available)
-    values (#{id,jdbcType=BIGINT}, #{permission,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
-      #{available,jdbcType=BIT})
+  <insert id="addPermission"  useGeneratedKeys="true" parameterType="com.palmshe.shiro.entity.Permission">
+  	<selectKey keyProperty="id" order="AFTER" resultType="long">
+  		SELECT LAST_INSERT_ID()
+  	</selectKey>
+  	insert into sys_permissions (id, permission, description, available)
+  	values (#{id}, #{permission}, #{description}, #{available})
   </insert>
-  <insert id="insertSelective" parameterType="com.palmshe.shiro.entity.Permission" >
-    insert into sys_permissions
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="permission != null" >
-        permission,
-      </if>
-      <if test="description != null" >
-        description,
-      </if>
-      <if test="available != null" >
-        available,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="permission != null" >
-        #{permission,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null" >
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="available != null" >
-        #{available,jdbcType=BIT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.palmshe.shiro.entity.Permission" >
-    update sys_permissions
-    <set >
-      <if test="permission != null" >
-        permission = #{permission,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null" >
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="available != null" >
-        available = #{available,jdbcType=BIT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.palmshe.shiro.entity.Permission" >
-    update sys_permissions
-    set permission = #{permission,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      available = #{available,jdbcType=BIT}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
 </mapper>

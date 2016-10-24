@@ -50,4 +50,13 @@ public class Role implements Serializable{
 	public String toString() {
 		return "Role [id=" + id + ", role=" + role + ", description=" + description + ", available=" + available + "]";
 	}
+
+	public Role(){}
+	
+	public Role(String role, String description, Boolean available) {
+		super();
+		this.role = role;
+		this.description = description;
+		this.available = available;
+	}
 }

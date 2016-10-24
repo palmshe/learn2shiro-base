@@ -61,4 +61,14 @@ public class User implements Serializable{
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", salt=" + salt + ", locked="
 				+ locked + "]";
 	}
+	
+	public User(){}
+	
+	public User(String username, String password, String salt, Boolean locked) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.salt = salt;
+		this.locked = locked;
+	}
 }
